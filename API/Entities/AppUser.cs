@@ -8,4 +8,6 @@ public class AppUser
     public required String DisplayName { get; set; }
     public required String Email { get; set; }
 
+    public required byte[] PasswordHash { get; set; }
+    public required byte[] PasswordSalt { get; set; }
 }
