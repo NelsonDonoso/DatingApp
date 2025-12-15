@@ -1,14 +1,13 @@
-import { Component, inject, input, OnInit, output, signal, ɵɵdeferPrefetchOnViewport } from '@angular/core';
-import { RegisterCreds, User } from '../../../Types/user';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, inject, output, signal } from '@angular/core';
+import { RegisterCreds } from '../../../Types/user';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
-import { JsonPipe } from '@angular/common';
 import { TextInput } from "../../../shared/text-input/text-input";
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, JsonPipe, TextInput],
+  imports: [ReactiveFormsModule, TextInput],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
