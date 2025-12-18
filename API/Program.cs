@@ -1,10 +1,12 @@
 using System.Text;
 using API.Data;
+using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using API.Middleware;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Differencing;
@@ -28,7 +30,19 @@ builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddScoped<ILikesRepository, LikesRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
+builder.Services.AddIdentityCore<AppUser>(opt =>
+{
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.User.RequireUniqueEmail = true;
+
+}).AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<AppDbContext>();
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(Options =>
     {
         var tokenKey = builder.Configuration["TokenKey"] ?? throw new Exception("Token key not found Program.cs");

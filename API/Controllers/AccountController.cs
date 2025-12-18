@@ -25,8 +25,7 @@ namespace API.Controllers
             {
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key,
+                UserName = registerDto.Email,
                 Member = new Member
                 {
                     DisplayName = registerDto.DisplayName,
@@ -50,22 +49,13 @@ namespace API.Controllers
 
             if (user == null) return Unauthorized("Invalid email adress");
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var ComputedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < ComputedHash.Length; i++)
-            {
-                if (ComputedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
-            }
-
             return user.ToDto(tokenService);
 
         }
 
         private async Task<bool> EmailExist(string email)
         {
-            return await context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower());
+            return await context.Users.AnyAsync(x => x.Email!.ToLower() == email.ToLower());
         }
 
     }
